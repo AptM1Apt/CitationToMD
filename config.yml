@@ -1,0 +1,3 @@
+book_settings:
+  BOOK_NAME: "DARWIN 11"
+  BASE_PATH: "/"
