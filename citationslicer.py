@@ -2,6 +2,7 @@ import re
 import os 
 
 from typing import List, Dict
+from database import AddAuthor, AddBook, AddCitation
 
 filepath1 = 'temp/cites.txt'
 filepath2 = 'temp'
@@ -12,7 +13,7 @@ def CheckingTemp():
     else:
         os.makedirs("filepath2")
     
-def ParseNotes(filepath: str) -> List[Dict]:
+def ParseCitations(filepath: str) -> List[Dict]:
     """
     Временная нарезка найденного cites.txt в подходящий нам вид, что даст нам возможность 
     после передать массив с цитатами дальше на выгрузку в SQL
@@ -21,17 +22,19 @@ def ParseNotes(filepath: str) -> List[Dict]:
     with open(filepath, 'r', encoding='utf-8') as file:
         content = file.read()
     
-    pattern = r'\*\*[^\(\d{4}\-\d{2}\-\d{2})/](.*•)(.*)\n((?:.*?\n)*?)(?=\n\*\*>|\n\s*\n|$)'
+    pattern = r'\*\*[^\(\d{4}\-\d{2}\-\d{2})/](.*)\s•\s(.*)\n((?:.*?\n)*?)(?=\n\*\*>|\n\s*\n|$)'
     cites = []
     matches = re.findall(pattern, content)
 
     for match in matches:
         cite = {
+            
             'Book_title': match[0],
             'Author_name': match[1],
             'Cite': match[2]
         }
         cites.append(cite)
+       
     '''
     Цитаты мы возвращаем как массив словарей
     Можно получить доступ к отдельным элементам, обратившись циклом к ним.
@@ -47,6 +50,5 @@ def ParseNotes(filepath: str) -> List[Dict]:
     '''
 
     return cites
-
 
 
