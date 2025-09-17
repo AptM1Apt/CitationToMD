@@ -21,9 +21,9 @@ def ParseNotes(filepath: str) -> List[Dict]:
     with open(filepath, 'r', encoding='utf-8') as file:
         content = file.read()
     
-    pattern = r'\*\*>.*?\n\*\*>(.*?)•(.*?)\n((?:.*?\n)*?)(?=\n\*\*>|\n\s*\n|$)'
+    pattern = r'\*\*[^\(\d{4}\-\d{2}\-\d{2})/](.*•)(.*)\n((?:.*?\n)*?)(?=\n\*\*>|\n\s*\n|$)'
     cites = []
-    matches = re.finditer(pattern, content, re.DOTALL)
+    matches = re.findall(pattern, content)
 
     for match in matches:
         cite = {
@@ -32,13 +32,21 @@ def ParseNotes(filepath: str) -> List[Dict]:
             'Cite': match[2]
         }
         cites.append(cite)
-    
+    '''
+    Цитаты мы возвращаем как массив словарей
+    Можно получить доступ к отдельным элементам, обратившись циклом к ним.
+    '''
+    '''
+    Например таким
+    for i, note in enumerate(parsed, 1):
+        print(f"Запись {i}")
+        print(f"Книга {note['Book_title']}")
+        print(f"Автор {note['Author_name']}")
+        print(f"Запись {note['Cite']}")
+        print("-"*50)
+    '''
+
     return cites
-    
-parsed = ParseNotes(filepath1)
-for i, note in enumerate(parsed, 1):
-    print(f"Запись #{i}")
-    print(f"Книга #{note['Book_title']}")
-    print(f"Автор #{note['Author_name']}")
-    print(f"Запись #{note['Cite']}")
-    print("-"*50)
+
+
+
