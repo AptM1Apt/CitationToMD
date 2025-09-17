@@ -1,5 +1,5 @@
-from database import CreateDB
+from database import CheckDB
 from net import get_file
 
-# CreateDB()
-get_file("100.10")
+CheckDB()
+# get_file("100.10")
